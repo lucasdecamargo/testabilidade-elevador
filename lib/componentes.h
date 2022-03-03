@@ -4,87 +4,140 @@
 #include <list>
 #include <functional>
 #include <string>
+#include <chrono>
+#include <memory>
 
 typedef std::string Id;
 
 class Andar {};
 
-template<typename T, typename R = void>
+template<typename ...T>
 class Notificador
 {
 public:
-    Notificador(){};
-    ~Notificador(){};
+    Notificador(){}
+    ~Notificador(){}
 
-    void notifica(T obj);
-    void registraOuvinte(std::function<R(T)>& func);
-    void removeOuvinte(std::function<R(T)>& func);
+    void notifica(T...);
+    void registraOuvinte(std::function<void(T...)> func);
 
 protected:
-    std::list< std::function<R(T)> > ouvintes;
+    std::list< std::function<void(T...)> > ouvintes;
 };
 
-template<typename T, typename R = void>
-class Sensor : public Notificador<T,R>
+template<typename T>
+class Sensor : public Notificador<T>
 {
 public:
-    Sensor(Id id);
+    Sensor(Id id) : _id(id){}
 
-    void ativa();
-    void desativa();
-    bool estado() { return _estado; }
+    void set(T estado);
+    const T estado() { return _estado; }
     const Id id() { return _id; }
 
 private:
     Id _id;
-    bool _estado;
+    T _estado;
 };
 
 typedef Sensor<bool> SensorBloqueio;
 typedef Sensor<bool> SensorPresenca;
+typedef Sensor<Andar> SensorAndar;
 
-class SensorAndar : public Sensor<Andar>
-{
-public:
-    SensorAndar(Id id) : Sensor(id) {}
-
-    const Andar get() { return andar; }
-    void set(Andar a) { andar = a; }
-
-protected:
-    Andar andar;
-};
-
-template<typename T=void>
+template<typename T=bool>
 class Contador : public Notificador<T>
 {
 public:
-    Contador(unsigned timeout=15);
+    Contador(std::chrono::seconds timeout=std::chrono::seconds(15)) 
+        : timeout(timeout),_ativado(false){}
 
-    void reinicia(T msg);
+    bool loop();
+    void desativa() { _ativado=false; }    
+    void reinicia(const T msg);
+    void reinicia(void);
 
 protected:
-    Andar andar;
+    std::chrono::seconds timeout;
 
 private:
-    T _msg;
+    std::chrono::seconds _sinc;
+    std::unique_ptr<T> _msg;
+    bool _ativado;
 };
 
-template<typename T=void>
-class Botao : public Notificador<T>
+
+template<typename ...T>
+class Botao : public Notificador<T...>
 {
 public:
-    Botao(Id id);
+    Botao(Id id) : _id(id){}
 
-    void dispara(T msg);
+    void dispara(T... msg) {this->notifica(msg...);}
 
 private:
     Id _id;
 };
 
-typedef Botao<void> BotaoDestino;
-typedef Botao<void> BotaoEmergencia;
-typedef Botao<void> BotaoChamada;
+typedef Botao<> BotaoDestino;
+typedef Botao<> BotaoEmergencia;
+typedef Botao<> BotaoChamada;
+
+
+template<typename ...T>
+void Notificador<T...>::notifica(T... args)
+{
+    for(auto &f : ouvintes) f(args...);
+}
+
+
+template<typename... T>
+void Notificador<T...>::registraOuvinte(std::function<void(T...)> func)
+{
+    ouvintes.push_back(func);
+}
+
+
+
+template<typename T>
+void Sensor<T>::set(T estado)
+{
+    _estado = estado;
+    this->notifica(estado);
+}
+
+
+template<typename T>
+bool Contador<T>::loop()
+{
+    auto now = std::chrono::steady_clock::now();
+    if(_ativado && (std::chrono::time_point_cast<std::chrono::seconds>(now).time_since_epoch() - _sinc) >= timeout)
+    {
+        this->notifica(_msg.get());
+        return true;
+    }
+
+    return false;
+}
+
+
+template<typename T>
+void Contador<T>::reinicia(const T msg)
+{
+    auto now = std::chrono::steady_clock::now();
+    _msg = std::make_unique<T>(msg);
+    _sinc = std::chrono::time_point_cast<std::chrono::seconds>(now).time_since_epoch();
+    _ativado = true;
+}
+
+template<>
+void Contador<bool>::reinicia(void)
+{
+    auto now = std::chrono::steady_clock::now();
+    _msg = std::make_unique<bool>(true);
+    _sinc = std::chrono::time_point_cast<std::chrono::seconds>(now).time_since_epoch();
+    _ativado = true;
+}
+
 
 
 #endif
