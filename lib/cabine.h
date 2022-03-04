@@ -3,8 +3,6 @@
 
 #include "componentes.h"
 
-
-/*-------------------- Iluminacao --------------------*/
 /* Classe Iluminacao */
 class Iluminacao{
     public:
@@ -17,24 +15,6 @@ class Iluminacao{
         bool _estado;
 };
 
-/* Metodos classe Ilumincao */
-Iluminacao::Iluminacao(): _estado(false){}
-
-Iluminacao::Iluminacao(bool estado): _estado(estado){}
-
-void Iluminacao::liga(void){
-    _estado = true;
-}
-
-void Iluminacao::desliga(void){
-    _estado = false;
-}
-
-bool Iluminacao::estado(void) const{
-    return _estado;
-}
-
-/*-------------------- Porta --------------------*/
 /* Classe Porta */
 class Porta{
     public:
@@ -47,33 +27,7 @@ class Porta{
         SensorBloqueio *_sensor;
 };
 
-/* Metodos classe Porta */
-Porta::Porta(SensorBloqueio *sensor): _sensor(sensor){
-    if(sensor->estado() == true){
-        _estado = true;
-    }else{
-        _estado = false;
-    }
-}
-
-void Porta::abre(void){
-    _estado = true;
-}
-
-void Porta::fecha(void){
-    if(_sensor->estado() == true){
-        return;
-    }
-    _estado = false;
-}
-
-bool Porta::estado(void) const{
-    return _estado;
-}
-
-/*-------------------- Cabine --------------------*/
 /* Classe Cabine */
-template<typename T>
 class Cabine{
     public:
         Cabine(bool estado_iluminacao, SensorBloqueio *sensor_bloqueio,
@@ -83,17 +37,9 @@ class Cabine{
     private:
         Iluminacao _iluminacao;
         Porta _porta;
-        Contador _contador;
+        // Contador _contador;
         SensorAndar *_sensor_andar;
         SensorPresenca *_sensor_presenca;
 };
-
-/* Metodos classe Cabine */
-
-Cabine::Cabine(){
-    
-}
-
-
 
 #endif
