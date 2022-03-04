@@ -1,7 +1,7 @@
 #ifndef CABINE_H
 #define CABINE_H
 
-#include "componentes.h"
+#include <componentes.h>
 
 /* Classe Iluminacao */
 class Iluminacao{
@@ -37,7 +37,7 @@ class Cabine{
     private:
         Iluminacao _iluminacao;
         Porta _porta;
-        // Contador _contador;
+        Contador<bool> _contador;
         SensorAndar *_sensor_andar;
         SensorPresenca *_sensor_presenca;
 };
