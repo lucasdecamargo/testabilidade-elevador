@@ -6,6 +6,7 @@
 #include <string>
 #include <chrono>
 #include <memory>
+#include <stdexcept>
 
 typedef std::string Id;
 
@@ -58,7 +59,7 @@ public:
     void reinicia(void);
 
     const std::chrono::seconds getTimeout() {return timeout;}
-    void setTimeout(std::chrono::seconds t) {if(t>=0) timeout=t; 
+    void setTimeout(std::chrono::seconds t) {if(t>=std::chrono::seconds(0)) timeout=t; 
         else throw std::invalid_argument("Timeout deve ser >= 0.");}
 
 protected:
@@ -115,7 +116,7 @@ template<typename T>
 bool Contador<T>::loop()
 {
     auto now = std::chrono::steady_clock::now();
-    if((_ativado && timeout > 0) && (std::chrono::time_point_cast<std::chrono::seconds>(now).time_since_epoch() - _sinc) >= timeout)
+    if((_ativado && timeout > std::chrono::seconds(0)) && (std::chrono::time_point_cast<std::chrono::seconds>(now).time_since_epoch() - _sinc) >= timeout)
     {
         this->notifica(_msg.get());
         return true;
