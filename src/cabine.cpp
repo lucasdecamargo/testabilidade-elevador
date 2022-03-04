@@ -1,4 +1,4 @@
-#include "cabine.h"
+#include <cabine.h>
 
 /* Metodos classe Ilumincao */
 Iluminacao::Iluminacao(): _estado(false){}
