@@ -132,10 +132,7 @@ void Contador<T>::reinicia(const T msg)
 template<>
 void Contador<bool>::reinicia(void)
 {
-    auto now = std::chrono::steady_clock::now();
-    _msg = std::make_unique<bool>(true);
-    _sinc = std::chrono::time_point_cast<std::chrono::seconds>(now).time_since_epoch();
-    _ativado = true;
+    this->reinicia(true);
 }
 
 
