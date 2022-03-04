@@ -1,7 +1,10 @@
 #ifndef CABINE_H
 #define CABINE_H
 
+#include <chrono>
+
 #include <componentes.h>
+#include <excecoes.h>
 
 /* Classe Iluminacao */
 class Iluminacao{
@@ -11,6 +14,7 @@ class Iluminacao{
         void liga(void);
         void desliga(void);
         bool estado(void) const;
+
     private:
         bool _estado;
 };
@@ -18,28 +22,37 @@ class Iluminacao{
 /* Classe Porta */
 class Porta{
     public:
-        Porta(SensorBloqueio *sensor);
+        Porta(bool estado);
+
         void abre(void);
         void fecha(void);
         bool estado(void) const;
+
+    protected:
+        SensorBloqueio sensor_bloqueio;
+
     private:
         bool _estado;
-        SensorBloqueio *_sensor;
 };
 
 /* Classe Cabine */
 class Cabine{
+    // friend class Elevador;
+
     public:
-        Cabine(bool estado_iluminacao, SensorBloqueio *sensor_bloqueio,
-                std::chrono::seconds timeout, Id sensor_andar, Id sensor_presenca);
-        Cabine();
-        void move(Andar destino);
+        Cabine(std::list<Andar>* lista_andar);
+
+        void move(Andar& destino);
+
+    protected:
+        Iluminacao iluminacao;
+        Porta porta;
+        Contador<bool> contador;
+        SensorAndar sensor_andar;
+        SensorPresenca sensor_presenca;
+
     private:
-        Iluminacao _iluminacao;
-        Porta _porta;
-        Contador<bool> _contador;
-        SensorAndar *_sensor_andar;
-        SensorPresenca *_sensor_presenca;
+        std::list<Andar>* _lista_andar;
 };
 
 #endif
