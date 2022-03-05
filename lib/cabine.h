@@ -14,6 +14,7 @@ class Iluminacao{
         void liga(void);
         void desliga(void);
         bool estado(void) const;
+        int soma(int a, int b);
 
     private:
         bool _estado;

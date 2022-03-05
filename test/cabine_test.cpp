@@ -7,6 +7,7 @@
 
 TEST(CabineTest, Iluminacao)
 {
-    Iluminacao ilum();
+    Iluminacao ilum(true);
+    EXPECT_EQ(ilum.soma(2,2), 4);
 }
 

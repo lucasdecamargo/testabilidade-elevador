@@ -7,6 +7,10 @@ Iluminacao::Iluminacao(): _estado(false){}
 
 Iluminacao::Iluminacao(bool estado): _estado(estado){}
 
+int Iluminacao::soma(int a, int b){
+    return a+b;
+}
+
 void Iluminacao::liga(void){
     _estado = true;
 }

@@ -6,7 +6,6 @@ include(CTest)
 include_directories(${CMAKE_CURRENT_LIST_DIR}/lib)
 
 add_executable(elevador main.cpp
-  src/cabine.cpp
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
