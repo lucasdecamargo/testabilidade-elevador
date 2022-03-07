@@ -32,7 +32,11 @@ target_link_libraries(
 )
 
 include(GoogleTest)
+
 gtest_discover_tests(
     componentes-test 
-    cabine-test
+)
+
+gtest_discover_tests(
+  cabine-test
 )
