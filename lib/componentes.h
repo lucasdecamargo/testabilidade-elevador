@@ -82,9 +82,9 @@ private:
     Id _id;
 };
 
-typedef Botao<> BotaoDestino;
-typedef Botao<> BotaoEmergencia;
-typedef Botao<> BotaoChamada;
+typedef Botao<Andar> BotaoDestino;
+typedef Botao<bool> BotaoEmergencia;
+typedef Botao<Andar> BotaoChamada;
 
 
 template<typename ...T>

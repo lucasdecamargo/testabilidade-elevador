@@ -11,36 +11,52 @@ class Gerenciador{
         Gerenciador();
         void insere(Andar);
         Andar proximo();
+        Andar destino();
+        bool nenhuma_requisicao();
 
     private:
         std::list<Andar> requisicoes;
+        Andar *proximo_destino;
 };
 
 /* Classe Andar */
 class Andar{
     public:
         Andar(int);
-        Gerenciador *ger;
+        int get_id();
 
     private:
         int id;
-        BotaoDestino *bCham;
-        BotaoChamada *bDest;
 };
 
 /* Classe Elevador */
 class Elevador{
 
+    enum Estado{
+        ESPERANDO,
+        PARADO,
+        MOVIMENTO,
+        EMERGENCIA
+    };
+
     public:
-        Elevador(Gerenciador *, Cabine *);
+        Elevador(int);
         void init(Andar *);
         void loop();
+        
+        BotaoDestino bDest;
+        BotaoChamada bCham;
+        Cabine cabine;
+
     private:
+        void contador_timeout(bool);
+
         std::list<Andar> l_andar;
-        int estados;
-        Gerenciador *ger;
-        Cabine *cabine;
-        Andar * andar;
+        Estado estado;
+        Gerenciador ger;
+        Andar * andar_atual;
+        int n_andares;
+        Contador<bool> contador;
 };
 
 #endif

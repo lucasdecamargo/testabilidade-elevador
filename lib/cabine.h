@@ -37,17 +37,17 @@ class Porta{
 
 /* Classe Cabine */
 class Cabine{
-    // friend class Elevador;
+    friend class Elevador;
 
     public:
         Cabine(std::list<Andar>* lista_andar);
 
         void move(Andar& destino);
+        
 
     protected:
         Iluminacao iluminacao;
         Porta porta;
-        Contador<bool> contador;
         SensorAndar sensor_andar;
         SensorPresenca sensor_presenca;
 
