@@ -10,8 +10,6 @@
 
 typedef std::string Id;
 
-// Provisorio
-class Andar {};
 
 template<typename ...T>
 class Notificador
