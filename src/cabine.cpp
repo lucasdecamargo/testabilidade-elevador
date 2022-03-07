@@ -41,8 +41,6 @@ bool Porta::estado(void) const{
     return _estado;
 }
 
-
-
 /* Metodos classe Cabine */
 Cabine::Cabine(std::list<Andar>* lista_andar)
     : iluminacao(true), porta(false), 
@@ -51,7 +49,16 @@ Cabine::Cabine(std::list<Andar>* lista_andar)
 
 }
 
-void Cabine::move(Andar& destino)
+void Cabine::move(Andar *atual, Andar prox)
 {
+    *atual = prox;
+    _movimento = true;
+}
 
+bool Cabine::get_movimento(int destino){
+    return _movimento;
+}   
+
+void Cabine::parar(){
+    _movimento = false;
 }

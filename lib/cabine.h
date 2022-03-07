@@ -42,8 +42,9 @@ class Cabine{
 
     public:
         Cabine(std::list<Andar>* lista_andar);
-
-        void move(Andar& destino);
+        void move(Andar *atual, Andar destino);
+        void parar();
+        bool get_movimento(int destino);
 
     protected:
         Iluminacao iluminacao;
@@ -53,6 +54,7 @@ class Cabine{
 
     private:
         std::list<Andar>* _lista_andar;
+        bool _movimento;
 };
 
 #endif
