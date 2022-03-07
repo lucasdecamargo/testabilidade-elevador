@@ -48,7 +48,6 @@ class Cabine{
     protected:
         Iluminacao iluminacao;
         Porta porta;
-        Contador<bool> contador;
         SensorAndar sensor_andar;
         SensorPresenca sensor_presenca;
 
