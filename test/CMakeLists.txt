@@ -15,21 +15,24 @@ add_executable(
     componentes_test.cpp
 )
 
+target_link_libraries(
+  componentes-test
+  gtest_main
+)
+
 add_executable(
-    cabine_test
+    cabine-test
     cabine_test.cpp
     ../src/cabine.cpp
 )
 
 target_link_libraries(
-  componentes-test 
-  gtest_main
-)
-
-target_link_libraries(
-  cabine_test
+  cabine-test
   gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(componentes-test cabine_test)
+gtest_discover_tests(
+    componentes-test 
+    cabine-test
+)
