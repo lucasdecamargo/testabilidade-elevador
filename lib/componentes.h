@@ -135,12 +135,10 @@ void Contador<T>::reinicia(const T msg)
     _ativado = true;
 }
 
-/* template<>
-void Contador<bool>::reinicia(void)
+template<>
+inline void Contador<bool>::reinicia(void)
 {
     this->reinicia(true);
-} */
-
-
+}
 
 #endif

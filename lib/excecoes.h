@@ -9,7 +9,7 @@ namespace exc{
 
 typedef std::invalid_argument argumento_invalido;
 
-typedef struct porta_bloqueada : public std::exception
+struct porta_bloqueada : public std::exception
 {
 	const char * what () const throw ()
     {

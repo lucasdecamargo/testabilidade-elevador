@@ -18,6 +18,7 @@ add_executable(
 add_executable(
     cabine_test
     cabine_test.cpp
+    ../src/cabine.cpp
 )
 
 target_link_libraries(
