@@ -14,7 +14,6 @@ class Iluminacao{
         void liga(void);
         void desliga(void);
         bool estado(void) const;
-        int soma(int a, int b);
 
     private:
         bool _estado;
@@ -24,12 +23,12 @@ class Iluminacao{
 class Porta{
     public:
         Porta(bool estado);
-
+        Porta();
         void abre(void);
         void fecha(void);
         bool estado(void) const;
 
-    protected:
+    /* protected: */
         SensorBloqueio sensor_bloqueio;
 
     private:
@@ -42,9 +41,9 @@ class Cabine{
 
     public:
         Cabine(std::list<Andar>* lista_andar);
-        void move(Andar *atual, Andar destino);
+        void mover(Andar *atual, Andar destino);
         void parar();
-        bool get_movimento(int destino);
+        bool get_movimento();
 
     protected:
         Iluminacao iluminacao;
