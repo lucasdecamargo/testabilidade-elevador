@@ -10,13 +10,33 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(componentes-test
+add_executable(
+    componentes-test 
     componentes_test.cpp
 )
 
-target_link_libraries(componentes-test
+target_link_libraries(
+  componentes-test
+  gtest_main
+)
+
+add_executable(
+    cabine-test
+    cabine_test.cpp
+    ../src/cabine.cpp
+)
+
+target_link_libraries(
+  cabine-test
   gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(componentes-test)
+
+gtest_discover_tests(
+    componentes-test 
+)
+
+gtest_discover_tests(
+  cabine-test
+)

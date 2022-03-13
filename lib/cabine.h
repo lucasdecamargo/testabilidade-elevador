@@ -23,12 +23,12 @@ class Iluminacao{
 class Porta{
     public:
         Porta(bool estado);
-
+        Porta();
         void abre(void);
         void fecha(void);
         bool estado(void) const;
 
-    protected:
+    /* protected: */
         SensorBloqueio sensor_bloqueio;
 
     private:
@@ -41,9 +41,9 @@ class Cabine{
 
     public:
         Cabine(std::list<Andar>* lista_andar);
-
-        void move(Andar& destino);
-        
+        void mover(Andar *atual, Andar destino);
+        void parar();
+        bool get_movimento();
 
     protected:
         Iluminacao iluminacao;
@@ -53,6 +53,7 @@ class Cabine{
 
     private:
         std::list<Andar>* _lista_andar;
+        bool _movimento;
 };
 
 #endif
