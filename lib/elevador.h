@@ -3,7 +3,7 @@
 
 #include <componentes.h>
 #include <cabine.h>
-#include <list>
+#include <vector>
 #include <andar.h>
 
 /* Classe Gerenciador */
@@ -16,7 +16,7 @@ class Gerenciador{
         bool nenhuma_requisicao();
 
     private:
-        std::list<Andar> requisicoes;
+        std::vector<Andar> requisicoes;
         Andar *proximo_destino;
 };
 
@@ -31,18 +31,21 @@ class Elevador{
             EMERGENCIA
         };
 
-        Elevador(int, std::list<Andar>*);
+        Elevador(std::vector<Andar>*);
         void loop();
         
         BotaoDestino bDest;
         BotaoChamada bCham;
+        BotaoEmergencia bEmerg;
         Cabine cabine;
         Estado estado;
 
     private:
         void contador_timeout(bool);
+        void emergencia_callback(bool);
+        void botao_andar_callback(Andar andar);
 
-        std::list<Andar> l_andar;
+        std::vector<Andar> l_andar;
         Gerenciador ger;
         Andar * andar_atual;
         int n_andares;

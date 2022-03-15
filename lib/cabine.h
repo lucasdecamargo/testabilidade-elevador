@@ -2,6 +2,7 @@
 #define CABINE_H
 
 #include <chrono>
+#include <vector>
 
 #include <componentes.h>
 #include <excecoes.h>
@@ -41,19 +42,18 @@ class Cabine{
     friend class Elevador;
 
     public:
-        Cabine(std::list<Andar>* lista_andar);
+        Cabine(std::vector<Andar>* lista_andar);
         void mover(Andar *atual, Andar destino);
         void parar();
         bool get_movimento();
 
-    protected:
         Iluminacao iluminacao;
         Porta porta;
         SensorAndar sensor_andar;
         SensorPresenca sensor_presenca;
-
-    private:
-        std::list<Andar>* _lista_andar;
+    
+    protected:
+        std::vector<Andar>* _lista_andar;
         bool _movimento;
 };
 

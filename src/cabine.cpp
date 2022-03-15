@@ -43,7 +43,7 @@ bool Porta::estado(void) const{
 
 
 /*-------------  Metodos classe Cabine  ------------- */
-Cabine::Cabine(std::list<Andar>* lista_andar)
+Cabine::Cabine(std::vector<Andar>* lista_andar)
     : iluminacao(true), porta(false), 
         sensor_andar("SA"), sensor_presenca("SP"), _lista_andar(lista_andar),
         _movimento(false)
