@@ -5,6 +5,7 @@
 
 #include <componentes.h>
 #include <excecoes.h>
+#include <andar.h>
 
 /* Classe Iluminacao */
 class Iluminacao{

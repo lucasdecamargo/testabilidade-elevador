@@ -26,11 +26,30 @@ add_executable(
     ../src/cabine.cpp
 )
 
+add_executable(
+    elevador-test
+    elevador_test.cpp
+    ../src/elevador.cpp
+)
+
+add_executable(
+  restricoes-test
+  restricoes_test.cpp
+)
+
 target_link_libraries(
   cabine-test
   gtest_main
 )
 
+target_link_libraries(
+  elevador-test
+  gtest_main
+)
+
+target_link_libraries(
+  restricoes-test
+)
 include(GoogleTest)
 
 gtest_discover_tests(
@@ -39,4 +58,12 @@ gtest_discover_tests(
 
 gtest_discover_tests(
   cabine-test
+)
+
+gtest_discover_tests(
+  elevador-test
+)
+
+gtest_discover_tests(
+  restricoes-test
 )

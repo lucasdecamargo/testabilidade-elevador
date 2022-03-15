@@ -3,6 +3,7 @@
 /* Classe Gerenciador */
 Gerenciador::Gerenciador(){
     requisicoes.clear();
+    proximo_destino=NULL;
 }
 
 void Gerenciador::insere(Andar andar){
@@ -10,32 +11,27 @@ void Gerenciador::insere(Andar andar){
     requisicoes.unique();
 }
 
-Andar Gerenciador::proximo(){
-    proximo_destino = &requisicoes.front();
-    requisicoes.pop_front();
-    return *proximo_destino;
+Andar* Gerenciador::proximo(){
+    if(requisicoes.size()>0){
+        proximo_destino = &requisicoes.front();
+        requisicoes.pop_front();
+        return proximo_destino;
+    }
+    return nullptr;
 }
 
-Andar Gerenciador::destino(){
-    return *proximo_destino;
+Andar* Gerenciador::destino(){
+    return proximo_destino;
 }
 
 bool Gerenciador::nenhuma_requisicao(){
     return requisicoes.empty();
 }
 
-/* Classe Andar */
-Andar::Andar(int id_name){
-    id = id_name;    
-}
-
-int Andar::get_id(){
-    return id;
-}
 
 /* Classe Elevador */
-Elevador::Elevador(int numero_andares): bCham("B1"), bDest("B2"), cabine(&l_andar){
-    l_andar.clear();
+Elevador::Elevador(int numero_andares, std::list<Andar> *andar): bCham("B1"), bDest("B2"), cabine(&l_andar){
+    l_andar = *andar;
     estado = ESPERANDO;
     n_andares = numero_andares;
     contador.registraOuvinte(std::bind(&Elevador::contador_timeout, this, std::placeholders::_1));
@@ -47,7 +43,6 @@ void Elevador::loop(){
     switch (estado)
     {
     case PARADO: // Parado com a porta aberta
-
         
 
         break;
@@ -55,14 +50,14 @@ void Elevador::loop(){
 
         if(ger.nenhuma_requisicao()==false){
 
-            Andar * andar_destino =  &ger.proximo();
-            if(ger.proximo().get_id() == andar_atual->get_id()){
+            Andar * andar_destino =  ger.proximo();
+            if(ger.proximo()->get_id() == andar_atual->get_id()){
                 cabine.iluminacao.liga();
                 cabine.porta.abre();
                 contador.reinicia();
                 estado = PARADO;
             }else{
-                cabine.move(andar_atual, *andar_destino);
+                cabine.mover(andar_atual, *andar_destino);
                 estado = MOVIMENTO;
             }
         }
@@ -70,7 +65,7 @@ void Elevador::loop(){
         break;
     case MOVIMENTO:
 
-        if(cabine.sensor_andar.estado().get_id() == ger.destino().get_id()){
+        if(cabine.sensor_andar.estado()->get_id() == ger.destino()->get_id()){
 
             if(cabine.iluminacao.estado()==false){
                 cabine.iluminacao.liga();
@@ -78,7 +73,7 @@ void Elevador::loop(){
 
             cabine.porta.abre();
             contador.reinicia();
-            andar_atual = &ger.destino();
+            andar_atual = ger.destino();
             cabine.parar();
             estado = PARADO;
         }
@@ -86,9 +81,7 @@ void Elevador::loop(){
         break;
     case EMERGENCIA:
         
-        if(cabine.sensor_andar.estado().get_id() == ger.destino().get_id()){
-            cabine.parar();
-        }
+        cabine.parar();
 
         if(cabine.iluminacao.estado()==false){
             cabine.iluminacao.liga();

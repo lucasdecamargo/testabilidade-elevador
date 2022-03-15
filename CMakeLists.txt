@@ -8,6 +8,7 @@ include_directories(${CMAKE_CURRENT_LIST_DIR}/lib)
 add_executable(elevador main.cpp
   src/cabine.cpp
   src/elevador.cpp
+  src/andar.cpp
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

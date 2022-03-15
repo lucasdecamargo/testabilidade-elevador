@@ -3,6 +3,7 @@
 #include <iostream>
 #include <exception>
 #include <thread>
+#include <andar.h>
 
 struct FunctionCalled : public std::exception
 {
@@ -28,6 +29,10 @@ void func_bool(bool b)
     throw FunctionCalled();
 }
 
+void func_andar(Andar andar){
+    throw FunctionCalled();
+}
+
 TEST(ComponentesTest, Notificador)
 {
     Notificador<int> n_int;
@@ -48,6 +53,7 @@ TEST(ComponentesTest, Sensor)
     SensorBloqueio s_bloq("SB1");
     SensorPresenca s_pres("SP1");
     SensorAndar s_andar("SA1");
+    Andar andar_1(1);
 
     s_bloq.registraOuvinte(func_bool);
     EXPECT_THROW(s_bloq.set(true),FunctionCalled);
@@ -57,7 +63,7 @@ TEST(ComponentesTest, Sensor)
     EXPECT_THROW(s_pres.set(true),FunctionCalled);
     EXPECT_THROW(s_pres.set(false),FunctionCalled);
 
-    s_andar.set(Andar());
+    s_andar.set(&andar_1);
 }
 
 TEST(ComponentesTest, Contador)
@@ -80,16 +86,17 @@ TEST(ComponentesTest, Botao)
     BotaoDestino b_dest("BD1");
     BotaoEmergencia b_emerg("BE1");
     BotaoChamada b_chamada("BC1");
+    Andar andar(1);
 
-    b_dest.registraOuvinte(func_void);
-    EXPECT_THROW(b_dest.dispara(),FunctionCalled);
-    EXPECT_THROW(b_dest.dispara(),FunctionCalled);
+    b_dest.registraOuvinte(func_andar);
+    EXPECT_THROW(b_dest.dispara(andar),FunctionCalled);
+    EXPECT_THROW(b_dest.dispara(andar),FunctionCalled);
 
-    b_emerg.registraOuvinte(func_void);
-    EXPECT_THROW(b_dest.dispara(),FunctionCalled);
-    EXPECT_THROW(b_dest.dispara(),FunctionCalled);
+    b_emerg.registraOuvinte(func_bool);
+    EXPECT_THROW(b_dest.dispara(true),FunctionCalled);
+    EXPECT_THROW(b_dest.dispara(false),FunctionCalled);
 
-    b_chamada.registraOuvinte(func_void);
-    EXPECT_THROW(b_dest.dispara(),FunctionCalled);
-    EXPECT_THROW(b_dest.dispara(),FunctionCalled);
+    b_chamada.registraOuvinte(func_andar);
+    EXPECT_THROW(b_dest.dispara(andar),FunctionCalled);
+    EXPECT_THROW(b_dest.dispara(andar),FunctionCalled);
 }

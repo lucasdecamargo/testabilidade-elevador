@@ -7,6 +7,7 @@
 #include <chrono>
 #include <memory>
 #include <stdexcept>
+#include <andar.h>
 
 typedef std::string Id;
 
@@ -42,7 +43,7 @@ private:
 
 typedef Sensor<bool> SensorBloqueio;
 typedef Sensor<bool> SensorPresenca;
-typedef Sensor<Andar> SensorAndar;
+typedef Sensor<Andar *> SensorAndar;
 
 template<typename T=bool>
 class Contador : public Notificador<T>
