@@ -13,6 +13,7 @@ enable_testing()
 add_executable(
     componentes-test 
     componentes_test.cpp
+    ../src/andar.cpp
 )
 
 target_link_libraries(
@@ -24,6 +25,23 @@ add_executable(
     cabine-test
     cabine_test.cpp
     ../src/cabine.cpp
+    ../src/andar.cpp
+)
+
+add_executable(
+    elevador-test
+    elevador_test.cpp
+    ../src/elevador.cpp
+    ../src/cabine.cpp
+    ../src/andar.cpp
+)
+
+add_executable(
+  restricoes-test
+  restricoes_test.cpp
+  ../src/elevador.cpp
+  ../src/cabine.cpp
+  ../src/andar.cpp
 )
 
 target_link_libraries(
@@ -31,6 +49,15 @@ target_link_libraries(
   gtest_main
 )
 
+target_link_libraries(
+  elevador-test
+  gtest_main
+)
+
+target_link_libraries(
+  restricoes-test
+  gtest_main
+)
 include(GoogleTest)
 
 gtest_discover_tests(
@@ -39,4 +66,12 @@ gtest_discover_tests(
 
 gtest_discover_tests(
   cabine-test
+)
+
+gtest_discover_tests(
+  elevador-test
+)
+
+gtest_discover_tests(
+  restricoes-test
 )

@@ -98,7 +98,7 @@ TEST(Porta, redundancia_bloqueada){
 // Duvida aqui: Como testar atributos protegidos? tenho que criar 
 // classe amiga so pra testar? Mas isso vai alterar a cabine.h
 TEST(Cabine, Construtor){
-    std::list<Andar> *andar;
+    std::vector<Andar> *andar;
     Cabine cab(andar);
     
     EXPECT_EQ(cab.get_movimento(), false);
@@ -107,12 +107,15 @@ TEST(Cabine, Construtor){
 
 
 TEST(Cabine, move_e_parar){
-    std::list<Andar> *andar;
-    Andar *atual;
-    Andar *prox;
-    Cabine cab(andar);
+    std::vector<Andar> andar;
+    Andar atual(1);
+    Andar prox(2);
+    andar.push_back(atual);
+    andar.push_back(prox);
+    
+    Cabine cab(&andar);
 
-    cab.mover(atual, *prox);
+    cab.mover(&atual, prox);
     EXPECT_EQ(cab.get_movimento(), true);
     cab.parar();
     EXPECT_EQ(cab.get_movimento(), false);

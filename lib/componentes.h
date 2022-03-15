@@ -7,11 +7,10 @@
 #include <chrono>
 #include <memory>
 #include <stdexcept>
+#include <andar.h>
 
 typedef std::string Id;
 
-// Provisorio
-class Andar {};
 
 template<typename ...T>
 class Notificador
@@ -44,7 +43,7 @@ private:
 
 typedef Sensor<bool> SensorBloqueio;
 typedef Sensor<bool> SensorPresenca;
-typedef Sensor<Andar> SensorAndar;
+typedef Sensor<Andar *> SensorAndar;
 
 template<typename T=bool>
 class Contador : public Notificador<T>
@@ -84,9 +83,9 @@ private:
     Id _id;
 };
 
-typedef Botao<> BotaoDestino;
-typedef Botao<> BotaoEmergencia;
-typedef Botao<> BotaoChamada;
+typedef Botao<Andar> BotaoDestino;
+typedef Botao<bool> BotaoEmergencia;
+typedef Botao<Andar> BotaoChamada;
 
 
 template<typename ...T>
